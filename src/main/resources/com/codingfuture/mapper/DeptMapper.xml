@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.codingfuture.mapper.DeptMapper">
+    <resultMap id="deptMap" type="com.codingfuture.entity.Dept">
+        <id property="deptno" column="dept_no"/>
+        <result property="dname" column="d_name"/>
+        <result property="loc" column="d_loc"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into dept(d_name, d_loc)
+        values (#{dname}, #{loc})
+    </insert>
+    <insert id="add2"  useGeneratedKeys="true" keyProperty="deptno">
+        insert into dept(d_name, d_loc)
+        values (#{dname}, #{loc})
+    </insert>
+
+    <select id="findAll" resultMap="deptMap">
+        select *
+        from dept;
+    </select>
+    <select id="findByID" resultMap="deptMap">
+        select *
+        from dept
+        where dept_no = #{deptno}
+    </select>
+</mapper>

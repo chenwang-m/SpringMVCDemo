@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.codingfuture.mapper.UserMapper">
+
+    <resultMap id="userAndItemsResMap" type="com.codingfuture.entity.User" autoMapping="true">
+        <id property="id" column="user_id"/>
+        <collection property="ordersList" ofType="com.codingfuture.entity.Orders">
+            <id property="id" column="order_id"/>
+            <result property="creatTime" column="create_time"/>
+            <result property="userId" column="user_id"/>
+            <collection property="orderDetailList" ofType="com.codingfuture.entity.OrderDetail">
+                <id property="id" column="orderdetail_id"/>
+                <result property="orderId" column="order_id"/>
+                <result property="itemId" column="item_id"/>
+                <result property="itemNmu" column="item_num"/>
+                <association property="items" javaType="com.codingfuture.entity.Item">
+                    <id property="id" column="item_id"/>
+                    <result property="name" column="name"/>
+                    <result property="price" column="price"/>
+                </association>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="findDetailAllByUserId" resultMap="userAndItemsResMap">
+        SELECT u.id  user_id,
+               u.username,
+               u.gender,
+               u.birthday,
+               o.id  order_id,
+               o.create_time,
+               od.id orderdetail_id,
+               od.item_num,
+               i.id  item_id,
+               i.`name`,
+               i.price
+        FROM `user` u
+                 LEFT JOIN `order` o ON u.id = o.user_id
+                 LEFT JOIN orderdetail od ON o.id = od.order_id
+                 LEFT JOIN item i ON od.item_id = i.id
+        WHERE u.id = #{id}
+    </select>
+    <resultMap id="findOrdersById" type="com.codingfuture.entity.User">
+        <id property="id" column="id"/>
+        <result property="userName" column="username"/>
+        <result property="gender" column="gender"/>
+        <result property="birthday" column="birthday"/>
+        <collection property="ordersList" ofType="com.codingfuture.entity.Orders">
+            <id property="id" column="id"/>
+            <result property="creatTime" column="create_time"/>
+            <result property="userId" column="user_id"/>
+        </collection>
+    </resultMap>
+    <select id="findAllByUserId" resultMap="findOrdersById">
+        SELECT *
+        FROM USER u
+                 LEFT JOIN `order` o ON u.id = o.user_id
+        WHERE u.id = #{id}
+    </select>
+</mapper>
