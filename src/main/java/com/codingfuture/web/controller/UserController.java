@@ -1,6 +1,5 @@
 package com.codingfuture.web.controller;
 
-import com.codingfuture.entity.User;
 import com.codingfuture.service.UserService;
 import com.codingfuture.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,5 +16,10 @@ public class UserController {
     public Result findDetailAllByUserId(@PathVariable Integer id) {
 //        return userService.findDetailAllByUserId(id);
         return Result.ok(userService.findDetailAllByUserId(id));
+    }
+
+    @GetMapping("/order/{id}")
+    public Result findOrderByUserId(@PathVariable Integer id) {
+        return Result.ok(userService.findOrderByUserId(id));
     }
 }

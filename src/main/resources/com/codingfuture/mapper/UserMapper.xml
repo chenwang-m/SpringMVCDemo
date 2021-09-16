@@ -39,21 +39,25 @@
                  LEFT JOIN item i ON od.item_id = i.id
         WHERE u.id = #{id}
     </select>
-    <resultMap id="findOrdersById" type="com.codingfuture.entity.User">
+    <resultMap id="findOrderByUserId" type="com.codingfuture.entity.User" autoMapping="true">
         <id property="id" column="id"/>
-        <result property="userName" column="username"/>
-        <result property="gender" column="gender"/>
-        <result property="birthday" column="birthday"/>
-        <collection property="ordersList" ofType="com.codingfuture.entity.Orders">
-            <id property="id" column="id"/>
-            <result property="creatTime" column="create_time"/>
-            <result property="userId" column="user_id"/>
+        <collection property="ordersList" ofType="com.codingfuture.entity.Orders" autoMapping="true">
+            <id property="id" column="order_id"/>
         </collection>
     </resultMap>
-    <select id="findAllByUserId" resultMap="findOrdersById">
-        SELECT *
-        FROM USER u
-                 LEFT JOIN `order` o ON u.id = o.user_id
-        WHERE u.id = #{id}
+    <select id="findOrderByUserId" resultMap="findOrderByUserId">
+        SELECT
+            u.id,
+            u.gender,
+            u.user_name,
+            u.birthday,
+            o.id order_id,
+            o.create_time,
+            o.user_id
+        FROM
+            `user` u
+                RIGHT JOIN `order` o ON u.id = o.user_id
+        WHERE
+            u.id = #{id}
     </select>
 </mapper>

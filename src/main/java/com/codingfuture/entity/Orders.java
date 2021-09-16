@@ -12,7 +12,7 @@ public class Orders {
     private int id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date creatTime;
+    private Date createTime;
     private int userId;
     private List<OrderDetail> orderDetailList;
     //private User user;
